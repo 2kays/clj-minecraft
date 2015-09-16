@@ -7,10 +7,12 @@
                  [org.spigotmc/spigot-api     "1.8.8-R0.1-SNAPSHOT"]
                  [clojure-complete            "0.2.4"]
                  [cheshire                    "5.5.0"]
-                 [org.reflections/reflections "0.9.9-RC1"]]
+                 [org.reflections/reflections "0.9.9-RC1"]
+                 [cider/cider-nrepl "0.9.1"]]
   :profiles {:dev {:dependencies []}}
-  :javac-options [ "-d" "classes/" "-source" "1.6" "-target" "1.6"]
-  :java-source-paths ["javasrc"]
+  :aot [cljminecraft.ClojurePlugin]
+  :javac-options [ "-d" "classes/" "-source" "1.8" "-target" "1.8"]
+  ;; :java-source-paths ["javasrc"]
   :uberjar-exclusions [#"(org|com|gnu)[/](bukkit|avaje|yaml|getspout|json|trove|spigotmc)[/](.*)"
                        #"com[/]google[/]common[/](.*)"
                        #"org[/]apache[/]commons[/](.*)"

@@ -11,7 +11,8 @@
             [cljminecraft.recipes :as r]
             [cljminecraft.items :as i]
             [cljminecraft.files]
-            [clojure.tools.nrepl.server :refer (start-server stop-server)]))
+            [clojure.tools.nrepl.server :refer (start-server stop-server)]
+            [cider.nrepl]))
 
 (def repl-handle (atom nil))
 
@@ -24,7 +25,8 @@
    {:msg (format "REPL already started or port %s:%s is in use" host port)}
    :else
    (do
-     (reset! repl-handle (start-server :host host :port port))
+     (reset! repl-handle (start-server :host host :port port
+                                       ))
      {:msg (format "Started repl on host: %s, port %s" host port)})))
 
 (defn stop-repl
