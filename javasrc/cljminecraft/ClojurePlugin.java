@@ -46,6 +46,9 @@ public class ClojurePlugin extends BasePlugin {
 		String pluginName = getDescription().getName();
 
 		boolean success = false;
+
+                loadClojureNameSpace ("cljminecraft.repl-classloader-hack");
+
 		if ( selfPluginName.equals( pluginName ) ) {
 			info( "Enabling main " + pluginName + " clojure Plugin" );
 			success = loadClojureNameSpace(selfCoreScript);
@@ -54,8 +57,8 @@ public class ClojurePlugin extends BasePlugin {
 			success = loadClojureNameSpace(pluginName+".core");
 		}
 
-                loadClojureNameSpace ("cljminecraft.repl-classloader-hack");
-                loadClojureNameSpace ("cljminecraft.core");
+                //loadClojureNameSpace ("cljminecraft.repl-classloader-hack");
+                //loadClojureNameSpace ("cljminecraft.core");
 		invokeClojureFunction(selfCoreScript, selfEnableFunction );
 
 		return success;
