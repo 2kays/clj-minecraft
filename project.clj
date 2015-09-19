@@ -7,7 +7,9 @@
                  [org.spigotmc/spigot-api     "1.8.8-R0.1-SNAPSHOT"]
                  [clojure-complete            "0.2.4"]
                  [cheshire                    "5.5.0"]
-                 [org.reflections/reflections "0.9.9-RC1"]]
+                 [org.reflections/reflections "0.9.9-RC1"]
+                 [cider/cider-nrepl           "0.9.1"]
+                 [org.tcrawley/dynapath       "0.2.3"]]
   :profiles {:dev {:dependencies []}}
   :javac-options [ "-d" "classes/" "-source" "1.6" "-target" "1.6"]
   :java-source-paths ["javasrc"]

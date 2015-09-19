@@ -9,15 +9,15 @@ import java.io.*;
  *
  */
 public class ClojurePlugin extends BasePlugin {
-	
-	
+
+
 	private final static String selfCoreScript=selfPluginName+".core";
 	private final static String selfEnableFunction="on-enable";
 	private final static String selfDisableFunction="on-disable";
-	
+
     private boolean loadClojureFile(String cljFile) {//no synchronized needed
         try {
-			
+
 			info( "About to load clojure file: " + cljFile );
 			assert clojure.lang.Compiler.LOADER.isBound();
 			clojure.lang.RT.loadResourceScript( cljFile );
@@ -29,22 +29,22 @@ public class ClojurePlugin extends BasePlugin {
 			return false;
 		}
     }
-    
-	
+
+
 	public final boolean loadClojureNameSpace( String ns ) {
 		String cljFile = ns.replaceAll( "[.]", "/" ) + ".clj";
 		return loadClojureFile( cljFile );
 	}
-    
+
     public Object invokeClojureFunction(String ns, String funcName) {
     	return clojure.lang.RT.var(ns, funcName).invoke(this);//passing the plugin instance as param
     }
 
     @Override
 	public boolean start() {
-    	
+
 		String pluginName = getDescription().getName();
-		
+
 		boolean success = false;
 		if ( selfPluginName.equals( pluginName ) ) {
 			info( "Enabling main " + pluginName + " clojure Plugin" );
@@ -54,9 +54,10 @@ public class ClojurePlugin extends BasePlugin {
 			success = loadClojureNameSpace(pluginName+".core");
 		}
 
+                loadClojureNameSpace ("cljminecraft.repl-classloader-hack");
                 loadClojureNameSpace ("cljminecraft.core");
 		invokeClojureFunction(selfCoreScript, selfEnableFunction );
-		
+
 		return success;
     }
 
@@ -71,15 +72,15 @@ public class ClojurePlugin extends BasePlugin {
 		invokeClojureFunction( selfCoreScript, selfDisableFunction );
 
     }
-    
+
 
 /*in plugin.yml of your clojure plugin which depends on cljminecraft, these are required:
- * 
+ *
  * main: cljminecraft.ClojurePlugin
  * depend: [cljminecraft]
- * 
- * and the name of your plugin(in your plugin.yml) should be the ns name of core.clj and core.clj should be the main script 
+ *
+ * and the name of your plugin(in your plugin.yml) should be the ns name of core.clj and core.clj should be the main script
  * which includes the two methods start and stop which take plugin instance as parameter
- * 
-  */  
+ *
+  */
 }
