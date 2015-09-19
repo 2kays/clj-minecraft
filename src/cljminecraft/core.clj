@@ -12,7 +12,7 @@
             [cljminecraft.items :as i]
             [cljminecraft.files]
             [clojure.tools.nrepl.server :refer (start-server stop-server)]
-            [cider.nrepl :refer (cider-nrepl-handler)]))
+            [cljminecraft.cider-nrepl-middlewares :refer (cider-nrepl-handler)]))
 
 (def repl-handle (atom nil))
 
