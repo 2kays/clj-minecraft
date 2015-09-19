@@ -12,7 +12,8 @@
             [cljminecraft.items :as i]
             [cljminecraft.files]
             [clojure.tools.nrepl.server :refer (start-server stop-server)]
-            [cljminecraft.cider-nrepl-middlewares :refer (cider-nrepl-handler)]))
+            [cljminecraft.cider-nrepl-middlewares :refer (cider-nrepl-handler)]
+            [lighttable.nrepl.handler :refer (lighttable-ops)]))
 
 (def repl-handle (atom nil))
 
@@ -26,7 +27,7 @@
    :else
    (do
      (reset! repl-handle (start-server :host host :port port
-                                       :handler cider-nrepl-handler))
+                                       :handler lighttable-ops))
      {:msg (format "Started repl on host: %s, port %s" host port)})))
 
 (defn stop-repl

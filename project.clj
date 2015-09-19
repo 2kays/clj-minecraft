@@ -9,7 +9,8 @@
                  [cheshire                    "5.5.0"]
                  [org.reflections/reflections "0.9.9-RC1"]
                  [cider/cider-nrepl           "0.9.1"]
-                 [org.tcrawley/dynapath       "0.2.3"]]
+                 [org.tcrawley/dynapath       "0.2.3"]
+                 [lein-light-nrepl            "0.2.0"]]
   :profiles {:dev {:dependencies []}}
   :javac-options [ "-d" "classes/" "-source" "1.6" "-target" "1.6"]
   :java-source-paths ["javasrc"]
