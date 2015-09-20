@@ -28,17 +28,20 @@
 
 (defn rect
   "Rectangle of size (sx, 1, sz) with fill :fill (default nil) and outline
-  :outline (default nil)"
+  :outline (default nil). If outline is nil, there will be no outline, only
+  fill."
   [sx sz & {:keys [fill outline]}]
-  (structure sx 1 sz (rect-data sx sz fill outline)))
+  (structure sx 1 sz (rect-data sx sz fill (or outline fill))))
 
 (defn box
   "Box of size (sx, sy, sz) centered at (0, 0, 0) with fill :fill (default nil)
-  and outline :outline (default nil)"
+  and outline :outline (default nil). If outline is nil, there will be no
+  outline, only fill."
   [sx sy sz & {:keys [fill outline]}]
   (structure sx sy sz
-             (let [first-and-last (rect-data sx sz outline outline)
-                   middle         (rect-data sx sz fill outline)]
+             (let [e-outline      (or outline fill)
+                   first-and-last (rect-data sx sz e-outline e-outline)
+                   middle         (rect-data sx sz fill e-outline)]
                (into [] (concat [first-and-last]
                                 (repeat (- sy 2) middle)
                                 [first-and-last])))))
