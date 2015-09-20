@@ -13,4 +13,11 @@
         sample-gen (s/generate 3 3 3 (fn [x y z] (if (= [x y z] [1 1 1]) 2 3)))]
     (is (= sample-box sample-gen))))
 
+(deftest map-with-pos
+  (is (= (+ 101 201 301)
+         (-> (s/box 3 3 3 :fill -1)
+             (s/move 100 200 300)
+             (s/map-with-pos +)
+             (s/at 101 201 301)))))
+
 (run-tests)
