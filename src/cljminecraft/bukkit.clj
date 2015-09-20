@@ -42,7 +42,7 @@
   (.runTask (scheduler) plugin fn))
 
 (defn sync
-  "Sync fn on the main bukkit thread, synchronously returning fn result"
+  "Schedule fn on the main bukkit thread, synchronously returning fn result"
   [plugin fn]
   (-> (scheduler) (.callSyncMethod plugin fn) .get))
 
