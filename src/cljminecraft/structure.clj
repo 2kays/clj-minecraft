@@ -4,6 +4,9 @@
 ;; data: y z x
 (defrecord Structure [offset-x offset-y offset-z size-x size-y size-z data])
 
+(defn- structure [size-x size-y size-z data]
+  (Structure. 0 0 0 size-x size-y size-z data))
+
 (defn at
   "Returns block at position x, y, z"
   [struct x y z]
@@ -13,8 +16,20 @@
                      (- p (key struct)))]
     (get-in struct [:data iy iz ix])))
 
-(defn- structure [size-x size-y size-z data]
-  (Structure. 0 0 0 size-x size-y size-z data))
+(defn set-at
+  "Sets block at specified position"
+  [struct x y z value] ; fixme: offset
+  (assoc-in struct [:data x y z] value))
+
+(defn bounds
+  "Returns (ax, ay, az, bx, by, bz) bounds of struct (coordinates of corners)"
+  [struct]
+  [(:offset-x struct)
+   (:offset-y struct)
+   (:offset-z struct)
+   (+ (:size-x struct) (:offset-x struct))
+   (+ (:size-y struct) (:offset-y struct))
+   (+ (:size-z struct) (:offset-z struct))])
 
 (defn- rect-data [sx sz fill outline]
   (let [first-and-last (into [] (repeat sx outline))
