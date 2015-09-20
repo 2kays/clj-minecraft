@@ -83,7 +83,7 @@
                                               (f x y z)))))))))
 
 (defn map-with-pos
-  "Maps function f with arguments (x y z) over each block, returning new
+  "Maps function f with arguments (x y z block) over each block, returning new
   structure"
   [struct f]
   (let [enumerate (fn [data offset-key] (map vector data (iterate inc (offset-key struct))))
@@ -91,5 +91,5 @@
         (into [] (for [[ydata y] (enumerate (:data struct) :offset-y)]
                    (into [] (for [[zdata z] (enumerate ydata :offset-z)]
                               (into [] (for [[xdata x] (enumerate zdata :offset-x)]
-                                         (f x y z)))))))]
+                                         (f x y z xdata)))))))]
     (assoc struct :data data)))
