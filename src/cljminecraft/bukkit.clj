@@ -41,6 +41,11 @@
   [plugin fn]
   (.runTask (scheduler) plugin fn))
 
+(defn sync
+  "Sync fn on the main bukkit thread, synchronously returning fn result"
+  [plugin fn]
+  (-> (scheduler) (.callSyncMethod plugin fn) .get))
+
 (defn delayed-task
   "Execute a given function on the main UI thread after a delay in server ticks (1 tick = 1/20 second), will return a task id you can use to cancel the task - if you specify async?, take care not to directly call any Bukkit API and, by extension, and clj-minecraft functions that use the Bukkit API within this function"
   [plugin fn delay & [async?]]
