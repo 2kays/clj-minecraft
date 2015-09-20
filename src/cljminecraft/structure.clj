@@ -11,7 +11,7 @@
                                   [y :offset-y]
                                   [z :offset-z]]]
                      (- p (key struct)))]
-    (-> struct :data (nth iy) (nth iz) (nth ix))))
+    (get-in struct [:data iy iz ix])))
 
 (defn- structure [size-x size-y size-z data]
   (Structure. 0 0 0 size-x size-y size-z data))
