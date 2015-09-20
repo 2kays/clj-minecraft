@@ -55,3 +55,12 @@
                 (:data struct))))
 
 ;(->  (box 5 5 5 :fill 1 :outline 0) (move 20 20 20) (move -5 -5 -1))
+(defn generate
+  "Generates structure of size (sx, sy, sz) by calling supplied function f with
+  arguments x, y, z"
+  [sx sy sz f]
+  (structure sx sy sz
+             (into [] (for [y (range sy)]
+                        (into [] (for [z (range sz)]
+                                   (into [] (for [x (range sx)]
+                                              (f x y z)))))))))
