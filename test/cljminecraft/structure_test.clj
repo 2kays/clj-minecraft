@@ -20,4 +20,9 @@
              (s/map-with-pos +)
              (s/at 101 201 301)))))
 
+(deftest merge
+  (is (= (#'s/merge-yzx (s/box 3 3 3 :fill 1)
+                        (-> (s/box 3 3 3 :fill 1) (s/move 3 0 0)))
+         (s/box 6 3 3 :fill 1))))
+
 (run-tests)
