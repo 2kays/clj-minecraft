@@ -32,7 +32,8 @@
                             (bk/sync @core/clj-plugin
                                      (fn []
                                        (apply-to-world @old-blocks location)
-                                       (reset! old-blocks (apply-to-world new location))))))
+                                       (reset! old-blocks
+                                               (apply-to-world new location))))))
     pt))
 
 (def test (insertion-point (Location. (bk/world-by-name "world") -227 65 166)))
