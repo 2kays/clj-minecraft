@@ -93,3 +93,75 @@
                               (into [] (for [[xdata x] (enumerate zdata :offset-x)]
                                          (f x y z xdata)))))))]
     (assoc struct :data data)))
+
+(defn- merged-bounds
+  [offset-a size-a offset-b size-b]
+  (let [leftmost (min offset-a offset-b)
+        rightmost (max (+ offset-a size-a) (+ offset-b size-b))]
+    [leftmost (- rightmost leftmost)]))
+
+
+(defn- nil-square
+  [sx sy]
+  (let [row (into [] (repeat sy nil))]
+    (into [] (repeat sx row))))
+
+;; TODO: use structural sharing of vectors to optimize speed/memory
+(defn- merge-any
+  [offset-a size-a a offset-b size-b b empty merge-fn]
+  (let [[offset-result
+         size-result] (merged-bounds offset-a size-a offset-b size-b)
+        left-pad-a (- offset-a offset-result)
+        left-pad-b (- offset-b offset-result)
+        right-pad-a (- size-result (+ left-pad-a size-a))
+        right-pad-b (- size-result (+ left-pad-b size-b))]
+    (into [] (map merge-fn
+                  (concat (repeat left-pad-a empty)
+                          [a]
+                          (repeat right-pad-a empty))
+                  (concat (repeat left-pad-b empty)
+                          [b]
+                          (repeat right-pad-b empty))))))
+
+(defn- merge-x
+  [offset-a size-a a offset-b size-b b]
+  (merge-any offset-a size-a a offset-b size-b b nil (fn [a b] (or b a))))
+
+(defn- merge-zx
+  [offset-a size-a offset-a-x size-a-x a offset-b size-b offset-b-x size-b-x b]
+  (let [[offset-result size-result]
+        (merged-bounds offset-a size-a offset-b size-b)]
+    (merge-any offset-a size-a a offset-b size-b b
+               (into [] (repeat size-result nil))
+               (fn [a-x b-x] (merge-x offset-a-x size-a-x
+                                      a-x
+                                      offset-b-x size-b-x
+                                      b-x)))))
+
+(defn- merge-yzx
+  [a b]
+  (let [[offset-result-y size-result-y]
+        (merged-bounds (:offset-y a) (:size-y a) (:offset-y b) (:size-y b))
+        [offset-result-z size-result-z]
+        (merged-bounds (:offset-z a) (:size-z a) (:offset-z b) (:size-z b))
+        [offset-result-x size-result-x]
+        (merged-bounds (:offset-x a) (:size-x a) (:offset-x b) (:size-x b))
+        data
+        (merge-any (:offset-y a) (:size-y a) a (:offset-y b) (:size-y b) b
+                   (nil-square size-result-y size-result-z)
+                   (fn [a-zx b-zx] (merge-zx (:offset-z a) (:size-z a)
+                                             (:offset-x a) (:size-x a)
+                                             a-zx
+                                             (:offset-z b) (:size-z b)
+                                             (:offset-x b) (:size-x b)
+                                             b-zx)))]
+    (Structure. offset-result-x offset-result-y offset-result-z
+                size-result-x size-result-y size-result-z
+                data)))
+
+(merge-yzx (-> (box 3 3 3 :fill 1) (move 2 2 2))
+           (-> (box 4 2 1 :outline 3) (move 1 0 1)))
+
+(merged-bounds 3 3 5 3)
+
+(merge-any 3 3 [1 2 3] 5 3 [-3 -4 -5] 100 (fn [a b] (if (= 100 b) a b)))
