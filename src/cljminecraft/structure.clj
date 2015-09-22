@@ -185,7 +185,7 @@
         data
         (merge-any (:offset-y a) (:size-y a) (:data a)
                    (:offset-y b) (:size-y b) (:data b)
-                   (nil-square size-result-y size-result-z)
+                   (nil-square size-result-z size-result-y)
                    (fn [a-zx b-zx] (merge-zx (:offset-z a) (:size-z a)
                                              (:offset-x a) (:size-x a)
                                              a-zx
