@@ -196,9 +196,3 @@
                 size-result-x size-result-y size-result-z
                 data)))
 
-(merge-yzx (-> (box 3 3 3 :fill 1) (move 2 2 2))
-           (-> (box 4 2 1 :outline 3) (move 1 0 1)))
-
-(merged-bounds 3 3 5 3)
-
-(merge-any 3 3 [1 2 3] 5 3 [-3 -4 -5] 100 (fn [a b] (if (= 100 b) a b)))
