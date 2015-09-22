@@ -60,8 +60,8 @@
   (is (= (s/mix (-> (s/box 1 2 1 :fill 1) (s/move 1 0 0))
                 (s/box 2 1 1 :fill 2))
          (s/from-str {\1 1 \2 2}
-                     [" 1"
-                      "22"]))))
+                     [" 1"]
+                     ["22"]))))
 
 (deftest box-small
   (is (= (s/box 3 1 1 :fill 1)
