@@ -42,3 +42,13 @@
                      ["111  "
                       "111  "
                       "111  "]))))
+
+(deftest box-small
+  (is (= (s/box 3 1 1 :fill 1)
+         (s/from-str {\1 1} ["111"])))
+  (is (= (s/box 3 1 1 :outline 1)
+         (s/from-str {\1 1} ["111"])))
+  (is (= (s/box 1 1 1 :outline 1)
+         (s/from-str {\1 1} ["1"])))
+  (is (= (s/box 2 2 2 :outline 1)
+         (s/from-str {\1 1} ["11" "11"] ["11" "11"]))))

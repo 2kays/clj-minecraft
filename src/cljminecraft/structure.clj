@@ -34,12 +34,16 @@
 (defn- rect-data [sx sz fill outline]
   (let [first-and-last (into [] (repeat sx outline))
         fills          (repeat (- sx 2) fill)
-        middle         (into [] (concat [outline]
-                                        fills
-                                        [outline]))]
-    (into [] (concat [first-and-last]
-                     (repeat (- sz 2) middle)
-                     [first-and-last]))))
+        middle         (into [] (if (> 1 sx)
+                                  (concat [outline]
+                                          fills
+                                          [outline])
+                                  (repeat sx outline)))]
+    (into [] (if (> 1 sz)
+               (concat [first-and-last]
+                       (repeat (- sz 2) middle)
+                       [first-and-last])
+               (repeat sz first-and-last)))))
 
 (defn rect
   "Rectangle of size (sx, 1, sz) with fill :fill (default nil) and outline
@@ -57,9 +61,11 @@
              (let [e-outline      (or outline fill)
                    first-and-last (rect-data sx sz e-outline e-outline)
                    middle         (rect-data sx sz fill e-outline)]
-               (into [] (concat [first-and-last]
-                                (repeat (- sy 2) middle)
-                                [first-and-last])))))
+               (into [] (if (> 1 sy)
+                          (concat [first-and-last]
+                                  (repeat (- sy 2) middle)
+                                  [first-and-last])
+                          (repeat sy first-and-last))))))
 
 (defn move
   "Moves structure by changing offset relatively by x, y, z"
