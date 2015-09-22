@@ -1,4 +1,4 @@
-(ns cljminecraft.structure.test
+(ns cljminecraft.structure-test
   (:require [cljminecraft.structure :as s]
             [clojure.test :refer (deftest is run-tests)]))
 
