@@ -197,5 +197,5 @@
                 data)))
 
 (defn merge
-  [struct struct2 & structs]
-  (reduce merge-yzx struct (cons struct2 structs)))
+  [struct & structs]
+  (reduce merge-yzx struct structs))
