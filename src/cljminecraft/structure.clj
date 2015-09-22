@@ -96,6 +96,33 @@
                                          (f x y z xdata)))))))]
     (assoc struct :data data)))
 
+(defn from-str
+  "Creates structure from list of lists of strings and mappings from characters
+  to blocks"
+  [mappings & strings]
+  (let [ysize (count strings)
+        zsizes (into #{} (map count strings))
+        zsize (if (= 1 (count zsizes))
+                (first zsizes)
+                (throw (IllegalArgumentException.
+                        "Not all layers have the same length")))
+        xsizes (into #{} (for [layer strings
+                               row layer]
+                           (count row)))
+        xsize (if (= 1 (count xsizes))
+                (first xsizes)
+                (throw (IllegalArgumentException.
+                        "Not all strings have the same length")))
+        data (into []
+                   (reverse
+                    (into []
+                          (for [layer strings]
+                            (into []
+                                  (for [row layer]
+                                    (into []
+                                          (map mappings row))))))))]
+    (structure xsize ysize zsize data)))
+
 (defn- merged-bounds
   [offset-a size-a offset-b size-b]
   (let [leftmost (min offset-a offset-b)
