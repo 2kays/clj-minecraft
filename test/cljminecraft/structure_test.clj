@@ -14,8 +14,8 @@
     (is (= sample-box sample-gen))))
 
 (deftest map-with-pos
-  (is (= (+ 101 201 301)
-         (-> (s/box 3 3 3 :fill -1)
+  (is (= (+ 101 201 301 0)
+         (-> (s/box 3 3 3 :fill 0)
              (s/move 100 200 300)
              (s/map-with-pos +)
              (s/at 101 201 301)))))
