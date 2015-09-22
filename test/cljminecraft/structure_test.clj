@@ -29,4 +29,16 @@
          [1 2 -3 -4 -5]))
   (is (= (#'s/merge-yzx (s/box 3 3 3 :fill 1)
                         (-> (s/box 3 3 3 :fill 1) (s/move 3 0 0)))
-         (s/box 6 3 3 :fill 1))))
+         (s/box 6 3 3 :fill 1)))
+  (is (= (#'s/merge-yzx (s/box 3 3 3 :outline 1)
+                        (-> (s/box 3 1 1 :fill 2) (s/move 2 1 2)))
+         (s/from-str {\1 1 \2 2}
+                     ["111  "
+                      "111  "
+                      "111  "]
+                     ["111  "
+                      "1 1  "
+                      "11222"]
+                     ["111  "
+                      "111  "
+                      "111  "]))))
