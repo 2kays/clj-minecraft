@@ -37,14 +37,16 @@
                       "111"
                       "111"]))))
 
-(deftest merge
+(deftest merge-partial
   (is (= (#'s/merge-x 3 3 [1 2 3] 5 3 [-3 -4 -5])
          [1 2 -3 -4 -5]))
   (is (= (#'s/merge-yzx (s/box 3 3 3 :fill 1)
                         (-> (s/box 3 3 3 :fill 1) (s/move 3 0 0)))
-         (s/box 6 3 3 :fill 1)))
-  (is (= (s/merge (s/box 3 3 3 :outline 1)
-                  (-> (s/box 3 1 1 :fill 2) (s/move 2 1 2)))
+         (s/box 6 3 3 :fill 1))))
+
+(deftest mix
+  (is (= (s/mix (s/box 3 3 3 :outline 1)
+                (-> (s/box 3 1 1 :fill 2) (s/move 2 1 2)))
          (s/from-str {\1 1 \2 2}
                      ["111  "
                       "111  "
@@ -55,7 +57,7 @@
                      ["111  "
                       "111  "
                       "111  "])))
-  (is (= (s/merge (-> (s/box 1 2 1 :fill 1) (s/move 1 0 0))
+  (is (= (s/mix (-> (s/box 1 2 1 :fill 1) (s/move 1 0 0))
                 (s/box 2 1 1 :fill 2))
          (s/from-str {\1 1 \2 2}
                      [" 1"

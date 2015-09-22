@@ -196,6 +196,6 @@
                 size-result-x size-result-y size-result-z
                 data)))
 
-(defn merge
+(defn mix
   [struct & structs]
   (reduce merge-yzx struct structs))
