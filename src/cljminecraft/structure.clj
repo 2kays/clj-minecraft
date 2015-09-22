@@ -34,12 +34,11 @@
 (defn- rect-data [sx sz fill outline]
   (let [first-and-last (into [] (repeat sx outline))
         fills          (repeat (- sx 2) fill)
-        middle         (into [] (if (> 1 sx)
-                                  (concat [outline]
-                                          fills
-                                          [outline])
-                                  (repeat sx outline)))]
-    (into [] (if (> 1 sz)
+        middle         (into [] (concat [outline]
+                                        fills
+                                        [outline]))]
+    (prn first-and-last fills middle (> sz 1) sx sz)
+    (into [] (if (> sz 1)
                (concat [first-and-last]
                        (repeat (- sz 2) middle)
                        [first-and-last])
@@ -61,7 +60,7 @@
              (let [e-outline      (or outline fill)
                    first-and-last (rect-data sx sz e-outline e-outline)
                    middle         (rect-data sx sz fill e-outline)]
-               (into [] (if (> 1 sy)
+               (into [] (if (> sy 1)
                           (concat [first-and-last]
                                   (repeat (- sy 2) middle)
                                   [first-and-last])

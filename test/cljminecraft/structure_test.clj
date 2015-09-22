@@ -24,14 +24,27 @@
   (is (= (#'s/merge-any 3 3 [1 2 3] 5 3 [-3 -4 -5] nil vector)
          [[1 nil] [2 nil] [3 -3] [nil -4] [nil -5]])))
 
+(deftest box-hollow
+  (is (= (s/box 3 3 3 :outline 1)
+         (s/from-str {\1 1}
+                     ["111"
+                      "111"
+                      "111"]
+                     ["111"
+                      "1 1"
+                      "111"]
+                     ["111"
+                      "111"
+                      "111"]))))
+
 (deftest merge
   (is (= (#'s/merge-x 3 3 [1 2 3] 5 3 [-3 -4 -5])
          [1 2 -3 -4 -5]))
   (is (= (#'s/merge-yzx (s/box 3 3 3 :fill 1)
                         (-> (s/box 3 3 3 :fill 1) (s/move 3 0 0)))
          (s/box 6 3 3 :fill 1)))
-  (is (= (#'s/merge-yzx (s/box 3 3 3 :outline 1)
-                        (-> (s/box 3 1 1 :fill 2) (s/move 2 1 2)))
+  (is (= (s/merge (s/box 3 3 3 :outline 1)
+                  (-> (s/box 3 1 1 :fill 2) (s/move 2 1 2)))
          (s/from-str {\1 1 \2 2}
                      ["111  "
                       "111  "
