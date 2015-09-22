@@ -197,5 +197,7 @@
                 data)))
 
 (defn mix
+  "Merge two or more structures. Blocks from next structures in argument list
+  overwrite blocks from previous structures"
   [struct & structs]
   (reduce merge-yzx struct structs))
