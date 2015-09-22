@@ -20,9 +20,13 @@
              (s/map-with-pos +)
              (s/at 101 201 301)))))
 
+(deftest merge-any
+  (is (= (#'s/merge-any 3 3 [1 2 3] 5 3 [-3 -4 -5] nil vector)
+         [[1 nil] [2 nil] [3 -3] [nil -4] [nil -5]])))
+
 (deftest merge
+  (is (= (#'s/merge-x 3 3 [1 2 3] 5 3 [-3 -4 -5])
+         [1 2 -3 -4 -5]))
   (is (= (#'s/merge-yzx (s/box 3 3 3 :fill 1)
                         (-> (s/box 3 3 3 :fill 1) (s/move 3 0 0)))
          (s/box 6 3 3 :fill 1))))
-
-(run-tests)

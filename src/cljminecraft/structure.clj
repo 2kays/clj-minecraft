@@ -111,6 +111,7 @@
 ;; TODO: use structural sharing of vectors to optimize speed/memory
 (defn- merge-any
   [offset-a size-a a offset-b size-b b empty merge-fn]
+  {:pre [(vector? a) (vector? b) (fn? merge-fn)]}
   (let [[offset-result
          size-result] (merged-bounds offset-a size-a offset-b size-b)
         left-pad-a (- offset-a offset-result)
@@ -119,14 +120,15 @@
         right-pad-b (- size-result (+ left-pad-b size-b))]
     (into [] (map merge-fn
                   (concat (repeat left-pad-a empty)
-                          [a]
+                          a
                           (repeat right-pad-a empty))
                   (concat (repeat left-pad-b empty)
-                          [b]
+                          b
                           (repeat right-pad-b empty))))))
 
 (defn- merge-x
   [offset-a size-a a offset-b size-b b]
+  {:pre [(vector? a) (vector? b)]}
   (merge-any offset-a size-a a offset-b size-b b nil (fn [a b] (or b a))))
 
 (defn- merge-zx
@@ -149,7 +151,8 @@
         [offset-result-x size-result-x]
         (merged-bounds (:offset-x a) (:size-x a) (:offset-x b) (:size-x b))
         data
-        (merge-any (:offset-y a) (:size-y a) a (:offset-y b) (:size-y b) b
+        (merge-any (:offset-y a) (:size-y a) (:data a)
+                   (:offset-y b) (:size-y b) (:data b)
                    (nil-square size-result-y size-result-z)
                    (fn [a-zx b-zx] (merge-zx (:offset-z a) (:size-z a)
                                              (:offset-x a) (:size-x a)
