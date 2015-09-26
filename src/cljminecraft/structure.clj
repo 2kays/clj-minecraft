@@ -205,3 +205,19 @@
   overwrite blocks from previous structures"
   [struct & structs]
   (reduce merge-yzx struct structs))
+
+(defn- basis
+  [coord] (case coord
+            :x [1 0 0]
+            :y [0 1 0]
+            :z [0 0 1]))
+
+(defn- stack-two
+  [coord a b]
+  (merge-yzx a (apply move b (map * (basis coord) (upper-corner a)))))
+
+(defn stack
+  "Put two or more structures side by side along specified coordinate (:x, :y or
+  :z)"
+  [coord struct & structs]
+  (reduce (partial stack-two coord) struct structs))

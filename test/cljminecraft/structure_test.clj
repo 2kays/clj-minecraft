@@ -72,3 +72,10 @@
          (s/from-str {\1 1} ["1"])))
   (is (= (s/box 2 2 2 :outline 1)
          (s/from-str {\1 1} ["11" "11"] ["11" "11"]))))
+
+(deftest stack
+  (is (= (s/mix (s/box 3 2 3 :fill 1)
+                (-> (s/box 2 2 2 :fill 2) (s/move 0 2 0)))
+         (s/stack :y
+                  (s/box 3 2 3 :fill 1)
+                  (s/box 2 2 2 :fill 2)))))
