@@ -35,25 +35,26 @@
    (+ (:size-y struct) (:offset-y struct))
    (+ (:size-z struct) (:offset-z struct))])
 
-(defn- rect-data [sx sz fill outline]
-  (let [first-and-last (into [] (repeat sx outline))
-        fills          (repeat (- sx 2) fill)
-        middle         (into [] (concat [outline]
-                                        fills
-                                        [outline]))]
-    (prn first-and-last fills middle (> sz 1) sx sz)
-    (into [] (if (> sz 1)
+(defn- rect-data [nrows ncols fill outline]
+  (let [first-and-last (into [] (repeat ncols outline))
+        fills          (repeat (- ncols 2) fill)
+        middle         (into [] (if (> ncols 1)
+                                  (concat [outline]
+                                          fills
+                                          [outline])
+                                  (repeat ncols outline)))]
+    (into [] (if (> nrows 1)
                (concat [first-and-last]
-                       (repeat (- sz 2) middle)
+                       (repeat (- nrows 2) middle)
                        [first-and-last])
-               (repeat sz first-and-last)))))
+               (repeat nrows first-and-last)))))
 
 (defn rect
   "Rectangle of size (sx, 1, sz) with fill :fill (default nil) and outline
   :outline (default nil). If outline is nil, there will be no outline, only
   fill."
   [sx sz & {:keys [fill outline]}]
-  (structure sx 1 sz (rect-data sx sz fill (or outline fill))))
+  (structure sx 1 sz (rect-data sz sx fill (or outline fill))))
 
 (defn box
   "Box of size (sx, sy, sz) centered at (0, 0, 0) with fill :fill (default nil)
@@ -62,8 +63,8 @@
   [sx sy sz & {:keys [fill outline]}]
   (structure sx sy sz
              (let [e-outline      (or outline fill)
-                   first-and-last (rect-data sx sz e-outline e-outline)
-                   middle         (rect-data sx sz fill e-outline)]
+                   first-and-last (rect-data sz sx e-outline e-outline)
+                   middle         (rect-data sz sx fill e-outline)]
                (into [] (if (> sy 1)
                           (concat [first-and-last]
                                   (repeat (- sy 2) middle)

@@ -63,6 +63,10 @@
                      [" 1"]
                      ["22"]))))
 
+(deftest rect-data
+  (is (= (#'s/rect-data 3 1 :1 :1)
+         [[:1] [:1] [:1]])))
+
 (deftest box-small
   (is (= (s/box 3 1 1 :fill 1)
          (s/from-str {\1 1} ["111"])))
@@ -71,7 +75,9 @@
   (is (= (s/box 1 1 1 :outline 1)
          (s/from-str {\1 1} ["1"])))
   (is (= (s/box 2 2 2 :outline 1)
-         (s/from-str {\1 1} ["11" "11"] ["11" "11"]))))
+         (s/from-str {\1 1} ["11" "11"] ["11" "11"])))
+  (is (= (s/box 1 1 3 :outline 1)
+         (s/from-str {\1 1} ["1" "1" "1"]))))
 
 (deftest stack
   (is (= (s/mix (s/box 3 2 3 :fill 1)
