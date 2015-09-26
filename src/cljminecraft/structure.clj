@@ -21,13 +21,17 @@
   [struct x y z value] ; fixme: offset
   (assoc-in struct [:data x y z] value))
 
-(defn bounds
-  "Returns (ax, ay, az, bx, by, bz) bounds of struct (coordinates of corners)"
+(defn lower-corner
+  "Returns (x, y, z) of lower corner of struct"
   [struct]
   [(:offset-x struct)
    (:offset-y struct)
-   (:offset-z struct)
-   (+ (:size-x struct) (:offset-x struct))
+   (:offset-z struct)])
+
+(defn upper-corner
+  "Returns (x, y, z) of upper corner of struct"
+  [struct]
+  [(+ (:size-x struct) (:offset-x struct))
    (+ (:size-y struct) (:offset-y struct))
    (+ (:size-z struct) (:offset-z struct))])
 
