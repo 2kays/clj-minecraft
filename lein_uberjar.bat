@@ -2,7 +2,7 @@
 	@rem put it in PATH
 
 @echo off
-set JAVA_CMD="c:\program files\java\jdk1.6.0_31\bin\java.exe"
+set JAVA_CMD="java"
 call lein uberjar
 
 set deployDIR=deploy
